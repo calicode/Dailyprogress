@@ -54,4 +54,12 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+
+		app.route('/schedule')
+		.get(isLoggedIn,function(req,res){
+			res.sendFile(path + '/public/schedule.html');
+
+		});
+
+
 };
