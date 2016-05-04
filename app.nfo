@@ -1,0 +1,17 @@
+
+
+
+As a user I want to be able to enter goals into the app "Learn Web development"
+As a user I want to be able to enter sub goals into the app "Node.js, express,javascript,css,tools"
+
+
+As a user I want to be able to check in when starting a task, and check out when taking a break. 
+	*Task entry screen, start/stop/finalize 
+
+As a user I want to be able to tag tasks with associated goals
+As a user I want to be able to see my time spent per day/week/month 
+As a user I want to be able to see time spent by goal/subgoals 
+... 
+
+
+
