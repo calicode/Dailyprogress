@@ -2,6 +2,9 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var TaskHandler = require(path + '/app/controllers/taskHandler.server.js');
+var bodyparser = require('body-parser');
+ 
 
 module.exports = function (app, passport) {
 
@@ -14,6 +17,8 @@ module.exports = function (app, passport) {
 	}
 
 	var clickHandler = new ClickHandler();
+	var taskHandler = new TaskHandler();
+	app.use(bodyparser.json());
 
 	app.route('/')
 		.get(isLoggedIn, function (req, res) {
@@ -59,7 +64,8 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn,function(req,res){
 			res.sendFile(path + '/public/schedule.html');
 
-		});
-
+		})
+		.post(isLoggedIn,taskHandler.logtask);
+		
 
 };

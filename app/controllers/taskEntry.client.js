@@ -52,6 +52,18 @@ function endWork() {
 info into database after validating it. 
 
 */
+
+let minutes = +timerState.getMinutes();
+
+	function makePost(formVal){
+var xhttp = new XMLHttpRequest();
+console.log(minutes);
+
+xhttp.open("POST", "/schedule",true);
+xhttp.setRequestHeader("Content-type","application/json;charset=UTF-8");
+xhttp.send(JSON.stringify({totalTime:minutes,taskDetails:formVal}));
+}
+
 if (!timerState.started){
 
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
@@ -59,6 +71,7 @@ if (!timerState.started){
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
 	console.log(formVal.value);
+	makePost(formVal.value);
 }
 else if (timerState.started){
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
@@ -69,15 +82,15 @@ else if (timerState.started){
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
 	console.log(formVal.value);
-
+	makePost(formVal.value);
+	}
 }
 
 
-}
 
 
 
-// 
+
 
 
 

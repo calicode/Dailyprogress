@@ -14,13 +14,19 @@ it should have a start/top button like this </p>
 <p>
 <button id = "butStartTimer"> Start/stop </button>
 <span> display start time  </span><br>
-<button id = "butEndWork"> Finish task </button>
+
+<button id = "butEndWork" > Finish task </button>
 <input type = "form" id = "taskNotes" value="default"> </input>
 
 </p>
 </div>
 <br>
 <div class = "schedule_bottom">
+
+Current task = 
+<br>
+
+
 And a list of tags, which will come later. It should pull tags from db and put the most used at the top. Or setup by the meta project so only specific ones show by default.  Maybe show time spent this week vs last week  here. Lets write some JS now. 
 
 I was trying to think of a way to display tags and other info down at the bottom here and I think I will use a templating engine to render it on the backend and then in  client js do an ajax request. hmm
