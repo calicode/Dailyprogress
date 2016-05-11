@@ -5,6 +5,7 @@ var timerState = {
 started:false,
 sessionTime:0,
 startTime:0,
+activeHours:[],
 
 getMinutes: function(){
 	return Math.ceil(this.sessionTime / 60); 	
@@ -13,6 +14,7 @@ resetState: function(){
 	this.started = false;
 	this.sessionTime = 0;
 	this.startTime = 0;
+	this.activeHours = [];
 	}
 };
 
@@ -53,36 +55,56 @@ info into database after validating it.
 
 */
 
+
+	function makePost(){
 let minutes = +timerState.getMinutes();
+let taskInfo = {totalTime:minutes,taskDetails:$('#taskNotes').val()};
+		$.post({
+			url: "http://127.0.0.1:8080/schedule",
+			statusCode:{
+			404:function(){alert("File not found");}
 
-	function makePost(formVal){
-var xhttp = new XMLHttpRequest();
-console.log(minutes);
+			},
+			type:'POST',
+			data:JSON.stringify(taskInfo),
+			contentType:"application/json"
+			
 
-xhttp.open("POST", "/schedule",true);
-xhttp.setRequestHeader("Content-type","application/json;charset=UTF-8");
-xhttp.send(JSON.stringify({totalTime:minutes,taskDetails:formVal}));
+
+
+		})
+		.success(function(){console.log("huh");})
+		.done(function(){console.log("successfully  sent to server");})
+		.fail(function(){console.log("Error sending to server, oh bother");});
+
+		/*var xhttp = new XMLHttpRequest();
+		
+		xhttp.open("POST", "/schedule",true);
+		xhttp.setRequestHeader("Content-type","application/json;charset=UTF-8");
+		xhttp.send(JSON.stringify({totalTime:minutes,taskDetails:formVal}));*/
+
 }
 
 if (!timerState.started){
-
+	makePost();
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
 	console.log(timerState.sessionTime, "seconds");
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
 	console.log(formVal.value);
-	makePost(formVal.value);
+	
 }
 else if (timerState.started){
+	
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
 	console.log(timerState.sessionTime, "seconds");
 	let timeTemp = (new Date().getTime()) - (timerState.startTime);
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
+	makePost();
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
 	console.log(formVal.value);
-	makePost(formVal.value);
 	}
 }
 
