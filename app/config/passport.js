@@ -37,7 +37,10 @@ module.exports = function (passport) {
 					newUser.github.displayName = profile.displayName;
 					newUser.github.publicRepos = profile._json.public_repos;
 					newUser.nbrClicks.clicks = 0;
-
+					newUser.totalMins = 0;
+					newUser.taskList.push({taskText:"DEFAULT","totalTime":0});
+					newUser.taskList[0].dates.push(0);
+					newUser.taskList[0].tags.push("DEFAULT");
 					newUser.save(function (err) {
 						if (err) {
 							throw err;
