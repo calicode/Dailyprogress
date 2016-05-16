@@ -2,14 +2,8 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Tasks = new Schema({
-totalTime:Number,
-dates:[Number],
-taskText:String,
-tags:[String]
 
 
-});
 var User = new Schema({
 	github: {
 		id: String,
@@ -22,7 +16,7 @@ var User = new Schema({
    },
    testObj:{thing:Number},
 
-taskList:[Tasks],
+
 totalMins:Number
  
 
@@ -30,4 +24,4 @@ totalMins:Number
 
 });
 
-module.exports = mongoose.model('User', User);
+module.exports =  mongoose.model('User', User);

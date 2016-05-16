@@ -2,6 +2,7 @@
 
 var parser = require('body-parser');
 var Users = require('../models/users.js');
+var Task = require('../models/task.js');
 
 
 // users.js above jhandles mongoose and using a schema.  Looks pretty straight forward 
@@ -27,23 +28,29 @@ totalMins:Number,
 function TaskHandler(){
 
 	this.logtask = function(req,res){
-
-		console.log("request came in", req.body);
+		var newTask = new Task();
 		
-		Users
-			.update({ 'github.id': req.user.github.id }, 
-			{ $addToSet:
-			{ taskList:{"totalTime":+req.body.totalTime,"taskText":req.body.taskDetails}}} )
+		console.log("request came in", req.body);
+
+
+
+		newTask.github.id = req.user.github.id;
+		newTask.totalTime =+req.body.totalTime;
+		newTask.taskText = req.body.taskDetails;	
+		newTask.save(function (err,result) {
+						if (err) {
+							throw err;
+						}
+						console.log(result);
+				return (null, newTask);
+				});
 			//.findOneAndUpdate({'github.id':req.user.github.id}, { $inc: { 'taskList.totalMins': 3 } })
-			.exec(function (err, result) {
-					if (err) { throw err; }
-
-					res.json("done");
-				}
-			);
-	};
-
+			
+		}
 }
+
+
+
 
 
 module.exports = TaskHandler;
