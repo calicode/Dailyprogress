@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var Task = new Schema({
 taskText:String,
 totalTime:Number,
-dates:[Number],
+dates:[String],
 tags:[String],
 github:{id:String,username:String}
 

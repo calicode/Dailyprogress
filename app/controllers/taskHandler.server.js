@@ -36,11 +36,14 @@ function TaskHandler(){
 
 		newTask.github.id = req.user.github.id;
 		newTask.totalTime =+req.body.totalTime;
-		newTask.taskText = req.body.taskDetails;	
+		newTask.taskText = req.body.taskDetails;
+		newTask.dates.push(req.body.startDateString);
+		newTask.dates.push(req.body.endDateString);
 		newTask.save(function (err,result) {
 						if (err) {
 							throw err;
 						}
+						res.end("Successfully saved");
 						console.log(result);
 				return (null, newTask);
 				});

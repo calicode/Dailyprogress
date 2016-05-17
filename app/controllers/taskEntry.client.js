@@ -6,6 +6,7 @@ started:false,
 sessionTime:0,
 startTime:0,
 activeHours:[],
+tags:[],
 
 getMinutes: function(){
 	return Math.ceil(this.sessionTime / 60); 	
@@ -14,7 +15,9 @@ resetState: function(){
 	this.started = false;
 	this.sessionTime = 0;
 	this.startTime = 0;
-	this.activeHours = [];
+	this.startDateString = 0;
+	this.endDateString = 0;
+	this.tags=[];
 	}
 };
 
@@ -30,7 +33,8 @@ if (timerState.started){
 	
 	console.log("Stopping timer at ", new Date());
 	timerState.started = false;
-	let timeTemp = (new Date().getTime()) - (timerState.startTime);
+	timerState.endDateString = new Date();
+	let timeTemp = (timerState.endDateString.getTime()) - (timerState.startDateString.getTime());
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
 	timerState.startTime = 0; 
@@ -43,7 +47,9 @@ else if (!timerState.started) {
 	console.log("Starting timer at ", new Date());
 	console.log("timer not started, turning on");
 	timerState.started = true;
-	timerState.startTime = new Date().getTime();	
+	timerState.startDateString = new Date();
+	timerState.startTime = timerState.startDateString.getTime();
+
 }
 
 }
@@ -58,7 +64,13 @@ info into database after validating it.
 
 	function makePost(){
 let minutes = +timerState.getMinutes();
-let taskInfo = {totalTime:minutes,taskDetails:$('#taskNotes').val()};
+let taskInfo = {totalTime:minutes,
+		taskDetails:$('#taskNotes').val(),
+		startDateString:timerState.startDateString,
+		endDateString:timerState.endDateString
+
+
+		};
 		$.post({
 			url: "http://127.0.0.1:8080/schedule",
 			statusCode:{
@@ -73,9 +85,9 @@ let taskInfo = {totalTime:minutes,taskDetails:$('#taskNotes').val()};
 
 
 		})
-		.success(function(){console.log("huh");})
+		
 		.done(function(){console.log("successfully  sent to server");})
-		.fail(function(){console.log("Error sending to server, oh bother");});
+		.fail(function(jqHxr,error,error_internal){console.log("Error sending to server, oh bother", error_internal);});
 
 		/*var xhttp = new XMLHttpRequest();
 		
@@ -98,9 +110,12 @@ else if (timerState.started){
 	
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
 	console.log(timerState.sessionTime, "seconds");
-	let timeTemp = (new Date().getTime()) - (timerState.startTime);
+	timerState.endDateString = new Date();
+	let timeTemp = (timerState.endDateString.getTime()) - (timerState.startDateString.getTime());
+	
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
+
 	makePost();
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
