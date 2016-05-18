@@ -37,8 +37,8 @@ function TaskHandler(){
 		newTask.github.id = req.user.github.id;
 		newTask.totalTime =+req.body.totalTime;
 		newTask.taskText = req.body.taskDetails;
-		newTask.dates.push(req.body.startDateString);
-		newTask.dates.push(req.body.endDateString);
+		newTask.dates.push(req.body.startDate);
+		newTask.dates.push(req.body.endDate);
 		newTask.save(function (err,result) {
 						if (err) {
 							throw err;

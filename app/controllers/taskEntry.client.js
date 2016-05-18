@@ -7,6 +7,8 @@ sessionTime:0,
 startTime:0,
 activeHours:[],
 tags:[],
+startDate:0,
+endDate:0,
 
 getMinutes: function(){
 	return Math.ceil(this.sessionTime / 60); 	
@@ -15,9 +17,10 @@ resetState: function(){
 	this.started = false;
 	this.sessionTime = 0;
 	this.startTime = 0;
-	this.startDateString = 0;
-	this.endDateString = 0;
+	this.startDate = 0;
+	this.endDate = 0;
 	this.tags=[];
+	$('#taskNotes').val("");
 	}
 };
 
@@ -33,8 +36,8 @@ if (timerState.started){
 	
 	console.log("Stopping timer at ", new Date());
 	timerState.started = false;
-	timerState.endDateString = new Date();
-	let timeTemp = (timerState.endDateString.getTime()) - (timerState.startDateString.getTime());
+	timerState.endDate = new Date().getTime();
+	let timeTemp = (timerState.endDate) - (timerState.startDate);
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
 	timerState.startTime = 0; 
@@ -46,9 +49,16 @@ if (timerState.started){
 else if (!timerState.started) {
 	console.log("Starting timer at ", new Date());
 	console.log("timer not started, turning on");
+	
 	timerState.started = true;
-	timerState.startDateString = new Date();
-	timerState.startTime = timerState.startDateString.getTime();
+	timerState.startDate = new Date().getTime();
+	let niceTime = new Date(timerState.startDate);
+
+	niceTime = "Started at: "+ (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
+	niceTime = niceTime + " Current session has lasted " + timerState.sessionTime +" minutes";
+console.log(niceTime);
+	$('#startDisplay').text(niceTime);
+
 
 }
 
@@ -62,21 +72,25 @@ info into database after validating it.
 */
 
 
-	function makePost(){
+function makePost(){
+
+if (timerState.sessionTime && ( $('#taskNotes').val() ) ){   
 let minutes = +timerState.getMinutes();
 let taskInfo = {totalTime:minutes,
 		taskDetails:$('#taskNotes').val(),
-		startDateString:timerState.startDateString,
-		endDateString:timerState.endDateString
+		startDate:timerState.startDate,
+		endDate:timerState.endDate
 
 
 		};
 		$.post({
 			url: "http://127.0.0.1:8080/schedule",
+			
 			statusCode:{
 			404:function(){alert("File not found");}
 
 			},
+			
 			type:'POST',
 			data:JSON.stringify(taskInfo),
 			contentType:"application/json"
@@ -89,11 +103,13 @@ let taskInfo = {totalTime:minutes,
 		.done(function(){console.log("successfully  sent to server");})
 		.fail(function(jqHxr,error,error_internal){console.log("Error sending to server, oh bother", error_internal);});
 
-		/*var xhttp = new XMLHttpRequest();
 		
-		xhttp.open("POST", "/schedule",true);
-		xhttp.setRequestHeader("Content-type","application/json;charset=UTF-8");
-		xhttp.send(JSON.stringify({totalTime:minutes,taskDetails:formVal}));*/
+
+		} else if (!timerState.sessionTime) {
+			alert("Total session time is 0 minutes, you should probably do some work!");}
+		else if (!$('#taskNotes').val()) {
+			alert("Task notes are blank, what did you do today?");
+		}
 
 }
 
@@ -103,15 +119,15 @@ if (!timerState.started){
 	console.log(timerState.sessionTime, "seconds");
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
-	console.log(formVal.value);
+	
 	
 }
 else if (timerState.started){
 	
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
 	console.log(timerState.sessionTime, "seconds");
-	timerState.endDateString = new Date();
-	let timeTemp = (timerState.endDateString.getTime()) - (timerState.startDateString.getTime());
+	timerState.endDate = new Date().getTime();
+	let timeTemp = (timerState.endDate) - (timerState.startDate);
 	
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
@@ -119,7 +135,7 @@ else if (timerState.started){
 	makePost();
 	timerState.resetState();
 	let formVal = document.getElementById("taskNotes");
-	console.log(formVal.value);
+	console.log(formVal.value)
 	}
 }
 
@@ -137,4 +153,4 @@ else if (timerState.started){
 
 
 
-})();
+})(); 

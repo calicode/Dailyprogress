@@ -4,7 +4,7 @@
 	<!-- this integrity check might blow up when theres a new version -->
 	
 		<link href ="/public/css/main.css" rel="stylesheet" type="text/css">
-		<link href =''/public/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<link href ="/public/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<script src = "/public/libraries/jquery-2.2.3.js"> </script>
 		<script src = "/public/libraries/bootstrap.min.js"> </script>
 
@@ -16,11 +16,16 @@
 it should have a start/top button like this </p>
 
 <p>
-<button id = "butStartTimer"> Start/stop </button>
-<span> display start time  </span><br>
 
-<button id = "butEndWork" > Finish task </button>
-<input type = "form" id = "taskNotes" value="default"> </input>
+
+<span id = "startDisplay" ></span><br>
+<button type="button" class = "btn btn-primary" id = "butStartTimer"> 
+
+Start/Stop </button>
+
+<br>
+<button type = "button" class = "btn btn-success" id = "butEndWork"> Finish task </button>
+<input type = "form" id = "taskNotes" value=""> </input>
 
 
 
