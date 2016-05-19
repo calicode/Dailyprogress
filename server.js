@@ -6,7 +6,9 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
 
+
 var app = express();
+app.set('view engine', 'ejs');
 require('dotenv').load();
 require('./app/config/passport')(passport);
 

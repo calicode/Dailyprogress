@@ -43,6 +43,7 @@ function TaskHandler(){
 						if (err) {
 							throw err;
 						}
+						res.render('schedule.ejs',{'testMe':'okdude'});
 						res.end("Successfully saved");
 						console.log(result);
 				return (null, newTask);

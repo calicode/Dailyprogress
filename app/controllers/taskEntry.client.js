@@ -55,7 +55,7 @@ else if (!timerState.started) {
 	let niceTime = new Date(timerState.startDate);
 
 	niceTime = "Started at: "+ (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
-	niceTime = niceTime + " Current session has lasted " + timerState.sessionTime +" minutes";
+	niceTime = niceTime + " Current session has lasted " + timerState.getMinutes() +" minutes";
 console.log(niceTime);
 	$('#startDisplay').text(niceTime);
 
@@ -100,7 +100,9 @@ let taskInfo = {totalTime:minutes,
 
 		})
 		
-		.done(function(){console.log("successfully  sent to server");})
+		.done(function(){console.log("successfully  sent to server");
+timerState.resetState();
+	})
 		.fail(function(jqHxr,error,error_internal){console.log("Error sending to server, oh bother", error_internal);});
 
 		
@@ -117,7 +119,7 @@ if (!timerState.started){
 	makePost();
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
 	console.log(timerState.sessionTime, "seconds");
-	timerState.resetState();
+	
 	let formVal = document.getElementById("taskNotes");
 	
 	
@@ -133,12 +135,11 @@ else if (timerState.started){
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
 
 	makePost();
-	timerState.resetState();
+
 	let formVal = document.getElementById("taskNotes");
-	console.log(formVal.value)
+	
 	}
 }
-
 
 
 

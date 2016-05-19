@@ -62,7 +62,8 @@ module.exports = function (app, passport) {
 
 		app.route('/schedule')
 		.get(isLoggedIn,function(req,res){
-			res.sendFile(path + '/public/schedule.html');
+			res.render('schedule.ejs', {'testMe':'initialRender'});
+			//res.sendFile(path + '/public/schedule.html');
 
 		})
 		.post(isLoggedIn,taskHandler.logtask);
