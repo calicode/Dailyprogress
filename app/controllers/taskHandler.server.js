@@ -27,9 +27,25 @@ totalMins:Number,
 
 function TaskHandler(){
 
+	this.getTasks = function (req,res){
+		
+
+		//console.log(count);
+		Task
+			.findOne({ 'github.id': req.user.github.id,'totalTime':{$gt:0} }, { '_id': false })
+			.exec(function (err, result) {
+				if (err) { throw err; }
+				console.log(result);
+				res.end();
+				// this  freezes the program for some reason req.testValueOK = result;
+				
+			});
+			},
+
+
 	this.logtask = function(req,res){
 		var newTask = new Task();
-		
+		res.render('schedule.ejs',{'testMe':'okdude'});
 		console.log("request came in", req.body);
 
 
@@ -43,7 +59,7 @@ function TaskHandler(){
 						if (err) {
 							throw err;
 						}
-						res.render('schedule.ejs',{'testMe':'okdude'});
+						
 						res.end("Successfully saved");
 						console.log(result);
 				return (null, newTask);
