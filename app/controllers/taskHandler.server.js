@@ -3,7 +3,7 @@
 var parser = require('body-parser');
 var Users = require('../models/users.js');
 var Task = require('../models/task.js');
-
+var taskUrl = "http://127.0.0.1/tasks"
 
 // users.js above jhandles mongoose and using a schema.  Looks pretty straight forward 
 // Trying to think of everything i would store in database. Minutes worked, task details, a unique id for the task details so that
@@ -27,7 +27,7 @@ totalMins:Number,
 
 function TaskHandler(){
 
-	this.getTasks = function (req,res){
+	this.getTasks = function (req,res,next){
 		
 
 		//console.log(count);
@@ -35,17 +35,18 @@ function TaskHandler(){
 			.findOne({ 'github.id': req.user.github.id,'totalTime':{$gt:0} }, { '_id': false })
 			.exec(function (err, result) {
 				if (err) { throw err; }
-				console.log(result);
-				res.end();
-				// this  freezes the program for some reason req.testValueOK = result;
-				
+				//res.json(result);
+    				console.log(result);
+    				req.someValue = result;
+return next();
+
 			});
 			},
 
 
 	this.logtask = function(req,res){
 		var newTask = new Task();
-		res.render('schedule.ejs',{'testMe':'okdude'});
+		
 		console.log("request came in", req.body);
 
 

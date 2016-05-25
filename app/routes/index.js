@@ -60,8 +60,11 @@ module.exports = function (app, passport) {
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
 
-		app.route('/schedule')
+
+
+	app.route('/schedule')
 		.get(isLoggedIn,function(req,res){
+			
 			res.render('schedule.ejs', {testMe:'initialRender'});
 			//res.sendFile(path + '/public/schedule.html');
 
@@ -69,13 +72,12 @@ module.exports = function (app, passport) {
 		.post(isLoggedIn,taskHandler.logtask);
 
 		app.route('/tasks')
-		.get(isLoggedIn,taskHandler.getTasks,function(req,res)  {
-//console.log("hi", req.testValueOK);
-		//res.render('schedules.ejs');	
+		.get(isLoggedIn,taskHandler.getTasks, function(req,res){
+			
+			console.log(req.someValue);
+			res.render('partials/taskList.ejs' , {testMe:req.someValue});
+		});
 
-		}
 
-			);
-		
 
 };
