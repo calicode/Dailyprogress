@@ -8,10 +8,10 @@ var session = require('express-session');
 
 
 var app = express();
-app.set('view engine', 'ejs');
+
 require('dotenv').load();
 require('./app/config/passport')(passport);
-app.set('views', (process.cwd() + '/views'));
+
 
 mongoose.connect(process.env.MONGO_URI);
 

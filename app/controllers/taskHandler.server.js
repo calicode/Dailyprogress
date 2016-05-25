@@ -36,8 +36,7 @@ function TaskHandler(){
 			.exec(function (err, result) {
 				if (err) { throw err; }
 				//res.json(result);
-    				console.log(result);
-    				req.someValue = result;
+    				res.json(result);
 return next();
 
 			});

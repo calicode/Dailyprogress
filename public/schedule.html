@@ -7,6 +7,7 @@
 		<link href ="/public/css/bootstrap.css" rel="stylesheet" type="text/css">
 		<script src = "/public/libraries/jquery-2.2.3.js"> </script>
 		<script src = "/public/libraries/bootstrap.min.js"> </script>
+		<script src = "/public/libraries/vue.js"> </script>
 
 	</head>
 	<body>
@@ -43,9 +44,7 @@ Current task - Clear on submit, display users total time. Save start/end  stamps
 And a list of tags, which will come later. It should pull tags from db and put the most used at the top. Or setup by the meta project so only specific ones show by default.  Maybe show time spent this week vs last week  here. Lets write some JS now. 
 this is a view from ejs lets see how it goes
 
-<%= testMe %>
-
-<div id = "task_list"> <% include partials/taskList.ejs %> </div>
+<div id = "task_list"> </div>
 
 <a href = '/tasks'> tasktest </a>
 
