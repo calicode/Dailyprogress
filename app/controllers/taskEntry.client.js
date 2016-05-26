@@ -25,10 +25,18 @@ resetState: function(){
 };
 
 
+var vm = new Vue({
+  el: '#task_list',
+  data: {
+    taskListResults: 'Hello Vue.js!'
+  }
+});
+
 
 
 document.getElementById("butStartTimer").onclick = startTimer;
 document.getElementById("butEndWork").onclick = endWork;
+document.getElementById("butUpdateTasks").onclick = updateTasks;
 
 function startTimer() {
 
@@ -72,8 +80,9 @@ info into database after validating it.
 */
 
 
-function makePost(){
 
+function makePost(){
+vm.taskListResults = "makepost was clicked and updated the view";
 if (timerState.sessionTime && ( $('#taskNotes').val() ) ){   
 let minutes = +timerState.getMinutes();
 let taskInfo = {totalTime:minutes,
@@ -147,6 +156,15 @@ else if (timerState.started){
 
 
 
+
+function updateTasks(){
+	$.get("http://127.0.0.1:8080/tasks")
+	.fail(function(error){console.log("Error getting tasks", error); })
+	.done(function(data){
+		console.log("meow" , data); 
+		vm.taskListResults = JSON.stringify(data);} );
+	
+}
 
 
 
