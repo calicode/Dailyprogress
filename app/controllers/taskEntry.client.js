@@ -162,7 +162,10 @@ function updateTasks(){
 	.fail(function(error){console.log("Error getting tasks", error); })
 	.done(function(data){
 		console.log("meow" , data); 
-		vm.taskListResults = JSON.stringify(data);} );
+		vm.taskListResults = data;
+		console.log(typeof(vm.taskListResults), vm.taskListResults);
+			console.log(vm.taskListResults["taskText"]);
+	} );
 	
 }
 

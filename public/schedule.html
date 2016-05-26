@@ -45,7 +45,7 @@ And a list of tags, which will come later. It should pull tags from db and put t
 this is a view from ejs lets see how it goes
 
 <div id = "task_list"> 
-{{ taskListResults}}
+{{ taskListResults.taskText }} took {{taskListResults.totalTime}} minutes
 </div> 
 
 <button type = "button" class = "btn btn-success" id = "butUpdateTasks"> update tasks </button>
