@@ -91,7 +91,7 @@ if (!timerState.displayUpdateInterval) {
 	let elapsed =  Math.ceil ( (currTime - timerState.startDate) / 3600/60) ;
 	console.log(elapsed);
 	vmTimeDisplay.duration = elapsed;
-			},6000);	
+			},600000);	
 		}
 
 	}
