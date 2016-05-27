@@ -9,6 +9,7 @@ activeHours:[],
 tags:[],
 startDate:0,
 endDate:0,
+displayUpdateInterval:0,
 
 getMinutes: function(){
 	return Math.ceil(this.sessionTime / 60); 	
@@ -20,8 +21,16 @@ resetState: function(){
 	this.startDate = 0;
 	this.endDate = 0;
 	this.tags=[];
+	this.displayUpdateInterval = 0;
 	$('#taskNotes').val("");
-	}
+	},
+
+getNiceTime :function(){
+let niceTime = new Date(this.startDate);
+niceTime =  (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
+return niceTime;
+	
+}
 };
 
 
@@ -32,6 +41,15 @@ var vm = new Vue({
   }
 });
 
+var vmTimeDisplay = new Vue ({
+el:'#startDisplay',
+data:{
+message:'No session stated yet',
+duration:''
+}
+});
+
+
 
 
 document.getElementById("butStartTimer").onclick = startTimer;
@@ -39,9 +57,10 @@ document.getElementById("butEndWork").onclick = endWork;
 document.getElementById("butUpdateTasks").onclick = updateTasks;
 
 function startTimer() {
-
+var dispInt;
 if (timerState.started){
-	
+
+	window.clearInterval(timerState.displayUpdateInterval);
 	console.log("Stopping timer at ", new Date());
 	timerState.started = false;
 	timerState.endDate = new Date().getTime();
@@ -49,26 +68,33 @@ if (timerState.started){
 	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
 	timerState.startTime = 0; 
-	console.log(timerState.sessionTime);
-	console.log("sessionTime is now ", timerState.getMinutes(), " minutes");
+	
+	
 
 }
 
-else if (!timerState.started) {
-	console.log("Starting timer at ", new Date());
-	console.log("timer not started, turning on");
-	
+else if (!timerState.started) {	
+	console.log("Started");
+
 	timerState.started = true;
 	timerState.startDate = new Date().getTime();
-	let niceTime = new Date(timerState.startDate);
-
-	niceTime = "Started at: "+ (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
-	niceTime = niceTime + " Current session has lasted " + timerState.getMinutes() +" minutes";
-console.log(niceTime);
-	$('#startDisplay').text(niceTime);
+	vmTimeDisplay.message = timerState.getNiceTime();
 
 
-}
+if (!timerState.displayUpdateInterval) { 
+
+	timerState.displayUpdateInterval = window.setInterval(function(){
+	
+	console.log ('moo',timerState.startDate);
+	let currTime = new Date().getTime();
+
+	let elapsed =  Math.ceil ( (currTime - timerState.startDate) / 3600/60) ;
+	console.log(elapsed);
+	vmTimeDisplay.duration = elapsed;
+			},6000);	
+		}
+
+	}
 
 }
 
@@ -163,8 +189,7 @@ function updateTasks(){
 	.done(function(data){
 		console.log("meow" , data); 
 		vm.taskListResults = data;
-		console.log(typeof(vm.taskListResults), vm.taskListResults);
-			console.log(vm.taskListResults["taskText"]);
+	
 	} );
 	
 }

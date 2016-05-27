@@ -203,12 +203,12 @@ span {
 	margin: 0;
 }
 
-.schedule_top {
+#schedule_top {
 border: 3px solid green;
 
 
 }
-.schedule_bottom {
+#schedule_bottom {
 	border:3px solid black;
 }
 
