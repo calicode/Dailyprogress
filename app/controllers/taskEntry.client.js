@@ -1,9 +1,14 @@
 (function(){
 'use strict';
 
-// 11am  blah1
-// 1108am blah2
 
+document.getElementById("butStartTimer").onclick = startTimer;
+document.getElementById("butEndWork").onclick = endWork;
+document.getElementById("butUpdateTasks").onclick = updateTasks;
+
+
+
+// sett up vue.js bindings. 
 
 var vm = new Vue({
   el: '#task_list',
@@ -15,26 +20,19 @@ var vm = new Vue({
 var vmTimeDisplay = new Vue ({
 el:'#schedule_top',
 data:{
-message:'No session stated yet',
-duration:''
+message: timerState.getDisplayMessage()
 }
 });
 
+
 function displayUpdate(){
 
-console.log ('moo',timerState.startDate);
-	let currTime = new Date().getTime();
-	let elapsed =  Math.ceil ( (currTime - timerState.startDate) / 1000/60) ;
-	console.log(elapsed);
-	vmTimeDisplay.duration = elapsed;
-	
-
+	vmTimeDisplay.message = timerState.getDisplayMessage();
 }
 
 
-document.getElementById("butStartTimer").onclick = startTimer;
-document.getElementById("butEndWork").onclick = endWork;
-document.getElementById("butUpdateTasks").onclick = updateTasks;
+
+
 
 function startTimer() {
 
@@ -44,11 +42,15 @@ if (timerState.started){
 	console.log("Stopping timer at ", new Date());
 	timerState.started = false;
 	timerState.endDate = new Date().getTime();
-	let timeTemp = (timerState.endDate) - (timerState.startDate);
-	timerState.sessionTime = +timerState.sessionTime + ( (timeTemp / 600) );
+	let timeTemp = timerState.endDate - timerState.startDate;
+	// + in front of the timerstate changes type into number. 
+	timerState.sessionTime = +timerState.sessionTime + (timeTemp / 600);
 	timerState.sessionTime = +timerState.sessionTime.toFixed();
 	timerState.startTime = 0; 
-	
+// resets just the start time back to 0 so user can continue with the same session states. Re-evaluate this at time point. 
+// add display notification to indicate whats going on 'session time is 45 mins, timer stopped'. Make sure it restarts and adds
+// correctly. Write automated test to do this. 
+
 	
 
 }
@@ -58,7 +60,8 @@ else if (!timerState.started) {
 
 	timerState.started = true;
 	timerState.startDate = new Date().getTime();
-	vmTimeDisplay.message = timerState.getNiceTime();
+	displayUpdate();
+	
 }
 
 if (!timerState.displayUpdateInterval) { 
@@ -66,7 +69,7 @@ if (!timerState.displayUpdateInterval) {
 	timerState.displayUpdateInterval = window.setInterval(displayUpdate,300000);	
 		}
 
-	}
+	} // end startTimer()
 
 
 
@@ -79,6 +82,8 @@ info into database after validating it.
 
 
 //handles sending data to the server 
+
+
 function makePost(){
 vm.taskListResults = "makepost was clicked and updated the view";
 if (timerState.sessionTime && ( $('#taskNotes').val() ) ){   

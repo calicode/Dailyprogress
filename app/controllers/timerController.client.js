@@ -14,6 +14,17 @@ displayUpdateInterval:0,
 getMinutes: function(){
 	return Math.ceil(this.sessionTime / 60); 	
 	},
+
+getDuration:function(){
+let currTime = new Date().getTime();
+let elapsed =  Math.ceil ( (currTime - this.startDate) / 1000/60) ;
+return elapsed;	
+},
+
+getDisplayMessage:function(){
+let message = this.started ? 'Started at ' + this.getNiceTime() + ' running for ' + this.getDuration() + ' minutes '  : 'No session stated yet'
+return message;
+},
 resetState: function(){
 	this.started = false;
 	this.sessionTime = 0;
