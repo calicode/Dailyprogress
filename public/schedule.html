@@ -9,12 +9,13 @@
 		<script src = "/public/libraries/bootstrap.min.js"> </script>
 		<script src = "/public/libraries/vue.js"> </script>
 
+
 	</head>
 	<body>
 
 
 
-<div class = "container"> 
+<div class = "container" id = schedule_top> 
 
 
 <p>
@@ -22,7 +23,7 @@ top section will handle start/stopping timer, display a current session time </p
 
 <p>
 
-<span id = "startDisplay" > Started at {{ message }} and have been going for {{duration}} minutes</span><br>
+<span id = "startDisplay" > Started at {{ message }}. Current session time is  {{duration}} minutes</span><br>
 <div class = "row">
 
 <div class = "col-sm-5 col-md-4">
@@ -56,7 +57,8 @@ Current task - Clear on submit, display users total time. Save start/end  stamps
 
 
 And a list of tags, which will come later. It should pull tags from db and put the most used at the top. Or setup by the meta project so only specific ones show by default.  Maybe show time spent this week vs last week  here. Lets write some JS now. 
-this is a view from ejs lets see how it goes
+
+
 
 <div id = "task_list"> 
 {{ taskListResults.taskText }} took {{taskListResults.totalTime}} minutes
@@ -67,6 +69,7 @@ this is a view from ejs lets see how it goes
 </div>
 
 
+<script src = "/controllers/timerController.client.js"> </script>
 <script src = "/controllers/taskEntry.client.js"> </script>
 
 

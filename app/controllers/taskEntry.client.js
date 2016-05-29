@@ -1,37 +1,8 @@
 (function(){
 'use strict';
 
-var timerState = {
-started:false,
-sessionTime:0,
-startTime:0,
-activeHours:[],
-tags:[],
-startDate:0,
-endDate:0,
-displayUpdateInterval:0,
-
-getMinutes: function(){
-	return Math.ceil(this.sessionTime / 60); 	
-	},
-resetState: function(){
-	this.started = false;
-	this.sessionTime = 0;
-	this.startTime = 0;
-	this.startDate = 0;
-	this.endDate = 0;
-	this.tags=[];
-	this.displayUpdateInterval = 0;
-	$('#taskNotes').val("");
-	},
-
-getNiceTime :function(){
-let niceTime = new Date(this.startDate);
-niceTime =  (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
-return niceTime;
-	
-}
-};
+// 11am  blah1
+// 1108am blah2
 
 
 var vm = new Vue({
@@ -42,14 +13,23 @@ var vm = new Vue({
 });
 
 var vmTimeDisplay = new Vue ({
-el:'#startDisplay',
+el:'#schedule_top',
 data:{
 message:'No session stated yet',
 duration:''
 }
 });
 
+function displayUpdate(){
 
+console.log ('moo',timerState.startDate);
+	let currTime = new Date().getTime();
+	let elapsed =  Math.ceil ( (currTime - timerState.startDate) / 1000/60) ;
+	console.log(elapsed);
+	vmTimeDisplay.duration = elapsed;
+	
+
+}
 
 
 document.getElementById("butStartTimer").onclick = startTimer;
@@ -57,7 +37,7 @@ document.getElementById("butEndWork").onclick = endWork;
 document.getElementById("butUpdateTasks").onclick = updateTasks;
 
 function startTimer() {
-var dispInt;
+
 if (timerState.started){
 
 	window.clearInterval(timerState.displayUpdateInterval);
@@ -79,24 +59,16 @@ else if (!timerState.started) {
 	timerState.started = true;
 	timerState.startDate = new Date().getTime();
 	vmTimeDisplay.message = timerState.getNiceTime();
-
+}
 
 if (!timerState.displayUpdateInterval) { 
 
-	timerState.displayUpdateInterval = window.setInterval(function(){
-	
-	console.log ('moo',timerState.startDate);
-	let currTime = new Date().getTime();
-
-	let elapsed =  Math.ceil ( (currTime - timerState.startDate) / 3600/60) ;
-	console.log(elapsed);
-	vmTimeDisplay.duration = elapsed;
-			},600000);	
+	timerState.displayUpdateInterval = window.setInterval(displayUpdate,300000);	
 		}
 
 	}
 
-}
+
 
 
 function endWork() {
@@ -106,7 +78,7 @@ info into database after validating it.
 */
 
 
-
+//handles sending data to the server 
 function makePost(){
 vm.taskListResults = "makepost was clicked and updated the view";
 if (timerState.sessionTime && ( $('#taskNotes').val() ) ){   
@@ -150,6 +122,8 @@ timerState.resetState();
 
 }
 
+
+//handles different timer states. 
 if (!timerState.started){
 	makePost();
 	console.log("Session time was ", timerState.getMinutes()," minutes ");
