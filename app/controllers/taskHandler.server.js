@@ -27,6 +27,24 @@ totalMins:Number,
 
 function TaskHandler(){
 
+//> db.tasks.aggregate([{"$group":{"_id":"$github.id","total":{"$sum":1}}}])
+//{ "_id" : "16291386", "total" : 32 } 
+
+
+	this.getWeeklyTime = function(req,res,next){
+	Task.aggregate([{
+		$match:{
+		'github.id':req.user.github.id, 
+		}
+
+	}]);	
+
+
+
+
+
+	},
+
 	this.getTasks = function (req,res,next){
 		
 

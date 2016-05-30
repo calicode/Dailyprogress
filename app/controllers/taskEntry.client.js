@@ -1,5 +1,6 @@
 (function(){
 'use strict';
+// 5-30-2016 this file is too large. put makepost/gettasks into ajax functions script. Put rest of timer stuff into timer controller. 
 
 
 document.getElementById("butStartTimer").onclick = startTimer;

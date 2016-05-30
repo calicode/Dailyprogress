@@ -22,7 +22,7 @@ return elapsed;
 },
 
 getDisplayMessage:function(){
-let message = this.started ? 'Started at ' + this.getNiceTime() + ' running for ' + this.getDuration() + ' minutes '  : 'No session stated yet'
+let message = this.started ? 'Started at ' + this.getNiceTime() + ' running for ' + this.getDuration() + ' minutes '  : 'No session stated yet';
 return message;
 },
 resetState: function(){
@@ -38,7 +38,8 @@ resetState: function(){
 
 getNiceTime :function(){
 let niceTime = new Date(this.startDate);
-niceTime =  (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ); 
+/// creates a nice time string  with 0 pads and am/pm e.x 12:35 AM or 01:09 PM using a bunch of ternaries 
+niceTime =  (niceTime.getHours() %12 || 12) + ":" + (niceTime.getMinutes()  > 9 ? niceTime.getMinutes() : "0" + niceTime.getMinutes() ) + ( niceTime.getHours() < 12 ? " AM" : " PM"   ); 
 return niceTime;
 	
 }

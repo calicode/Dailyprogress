@@ -1,0 +1,23 @@
+db.tasks.aggregate([{
+$match:{'github.id':{$eq:{16291386}}
+},
+
+$group:{_id:null,count:
+
+{$sum:1}
+
+}])
+
+
+{
+	"_id" : ObjectId("573baf8c33b435580f4d3e73"),
+	"taskText" : "",
+	"totalTime" : 1,
+	"github" : {
+		"id" : "16291386"
+	},
+	"tags" : [ ],
+	"dates" : [
+		"1463529348109",
+		"1463529349840"
+	],
