@@ -21,3 +21,46 @@ $group:{_id:null,count:
 		"1463529348109",
 		"1463529349840"
 	],
+
+
+"weeklyTotal":{"$sum":"$totalTime"}
+
+
+> db.tasks.aggregate([{"$match":{'github.id':'16291386','dates':{'$gt':'146352953000'}}},{$group:{_id:null,count:{$sum:1}}}])
+{ "_id" : null, "count" : 9 }
+
+
+> var blah = new Date(05/05/2016);
+undefined
+> blah
+Wed Dec 31 1969 18:00:00 GMT-0600 (CST)
+> var blah = new Date('05/05/2016');
+undefined
+> blah
+Thu May 05 2016 00:00:00 GMT-0500 (CDT)
+> var blah = new Date('05/20/2016');
+undefined
+> blah
+Fri May 20 2016 00:00:00 GMT-0500 (CDT)
+> blah.getDate()
+20
+> blah.getTime()
+1463720400000
+> var blah2 = new Date('05/27/2016');
+undefined
+> blah2
+Fri May 27 2016 00:00:00 GMT-0500 (CDT)
+
+> blah
+Fri May 20 2016 00:00:00 GMT-0500 (CDT)
+> blah2.getTime() - blah.getTime()
+604800000
+> var blah2 = new Date('02/27/2016');
+undefined
+> var blah = new Date('02/20/2016');
+undefined
+> blah2.getTime() - blah.getTime()
+604800000
+
+
+using  7 days converted to ms to get sum of recent activity. Almost seems to easy
