@@ -26,24 +26,39 @@ totalMins:Number,
 
 
 function TaskHandler(){
+// 86400000 = 24 hours in miliseconds
+// 604800000 = 7 days in miliseconds
+
 
 //> db.tasks.aggregate([{"$group":{"_id":"$github.id","total":{"$sum":1}}}])
 //{ "_id" : "16291386", "total" : 32 } 
+/*
+b.tasks.aggregate([{"$match":{'github.id':'16291386','dates':{'$gt':'146352953000'}}},{$group:{_id:null,count:{$sum:1}}}])
+{ "_id" : null, "count" : 9 }
+
+*/
+	this.getWeeklyTotal = function(req,res,next){
+
+	let endDate = new Date().getTime() + 86400000;
+	let startDate = endDate - 604800000; 
 
 
-	this.getWeeklyTime = function(req,res,next){
 	Task.aggregate([{
-		$match:{
-		'github.id':req.user.github.id, 
-		}
+		$match:
+		{'github.id':req.user.github.id 
+		} //,{$group:{_id:null,count{$sum:1}}
 
-	}]);	
+	}])
 
-
-
-
-
-	},
+			.exec(function (err, result) {
+				if (err) { throw err; }
+				//res.json(result);
+    				console.log(result);
+    				res.json(result);	
+    				next();
+    			});
+  
+},
 
 	this.getTasks = function (req,res,next){
 		
@@ -71,8 +86,7 @@ return next();
 		newTask.github.id = req.user.github.id;
 		newTask.totalTime =+req.body.totalTime;
 		newTask.taskText = req.body.taskDetails;
-		newTask.dates.push(req.body.startDate);
-		newTask.dates.push(req.body.endDate);
+		newTask.startDate = req.body.startDate;
 		newTask.save(function (err,result) {
 						if (err) {
 							throw err;
@@ -82,7 +96,6 @@ return next();
 						console.log(result);
 				return (null, newTask);
 				});
-			//.findOneAndUpdate({'github.id':req.user.github.id}, { $inc: { 'taskList.totalMins': 3 } })
 			
 		}
 }

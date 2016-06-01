@@ -73,6 +73,9 @@ module.exports = function (app, passport) {
 		app.route('/tasks')
 		.get(isLoggedIn,taskHandler.getTasks);
 
+		app.route('/weektotal')
+		.get(isLoggedIn, taskHandler.getWeeklyTotal);
+
 
 
 };

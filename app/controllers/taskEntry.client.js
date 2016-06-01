@@ -5,7 +5,7 @@
 
 document.getElementById("butStartTimer").onclick = startTimer;
 document.getElementById("butEndWork").onclick = endWork;
-document.getElementById("butUpdateTasks").onclick = updateTasks;
+document.getElementById("butUpdateTasks").onclick = getWeeklyTotal;
 
 
 
@@ -91,8 +91,8 @@ if (timerState.sessionTime && ( $('#taskNotes').val() ) ){
 let minutes = +timerState.getMinutes();
 let taskInfo = {totalTime:minutes,
 		taskDetails:$('#taskNotes').val(),
-		startDate:timerState.startDate,
-		endDate:timerState.endDate
+		startDate:timerState.startDate
+	
 
 
 		};
@@ -158,6 +158,21 @@ else if (timerState.started){
 
 
 
+
+
+
+
+
+function getWeeklyTotal(){
+	$.get("http://127.0.0.1:8080/weektotal")
+	.fail(function(error){console.log("Error getting tasks", error); })
+	.done(function(data){
+		console.log("meow2" , data); 
+		
+	
+	} );
+	
+}
 
 
 
