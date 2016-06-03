@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 // 5-30-2016 this file is too large. put makepost/gettasks into ajax functions script. Put rest of timer stuff into timer controller. 
-
+const baseUrl = window.location.hostname
 
 document.getElementById("butStartTimer").onclick = startTimer;
 document.getElementById("butEndWork").onclick = endWork;
@@ -67,7 +67,7 @@ else if (!timerState.started) {
 
 if (!timerState.displayUpdateInterval) { 
 
-	timerState.displayUpdateInterval = window.setInterval(displayUpdate,300000);	
+	timerState.displayUpdateInterval = window.setInterval(displayUpdate,60000);	
 		}
 
 	} // end startTimer()
@@ -97,7 +97,7 @@ let taskInfo = {totalTime:minutes,
 
 		};
 		$.post({
-			url: "http://127.0.0.1:8080/schedule",
+			url: "https://"+baseUrl+"/schedule",
 			
 			statusCode:{
 			404:function(){alert("File not found");}
@@ -164,7 +164,8 @@ else if (timerState.started){
 
 
 function getWeeklyTotal(){
-	$.get("http://127.0.0.1:8080/weektotal")
+	alert(location);
+	$.get("https://"+baseUrl+":8080/weektotal")
 	.fail(function(error){console.log("Error getting tasks", error); })
 	.done(function(data){
 		console.log("meow2" , data); 
@@ -179,7 +180,7 @@ function getWeeklyTotal(){
 
 
 function updateTasks(){
-	$.get("http://127.0.0.1:8080/tasks")
+	$.get("https://"+baseUrl+":8080/tasks")
 	.fail(function(error){console.log("Error getting tasks", error); })
 	.done(function(data){
 		console.log("meow" , data); 
