@@ -165,7 +165,7 @@ else if (timerState.started){
 
 function getWeeklyTotal(){
 	alert(location);
-	$.get("http://"+baseUrl+":8080/weektotal")
+	$.get("http://"+baseUrl+"/weektotal")
 	.fail(function(error){console.log("Error getting tasks", error); })
 	.done(function(data){
 		console.log("meow2" , data); 
@@ -180,7 +180,7 @@ function getWeeklyTotal(){
 
 
 function updateTasks(){
-	$.get("http://"+baseUrl+":8080/weektotal")
+	$.get("http://"+baseUrl+"/weektotal")
 	.fail(function(error){console.log("Error getting tasks", error); })
 	.done(function(data){
 		console.log("meow" , data); 
