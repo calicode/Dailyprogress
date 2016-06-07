@@ -14,7 +14,8 @@ document.getElementById("butUpdateTasks").onclick = getWeeklyTotal;
 var vm = new Vue({
   el: '#task_list',
   data: {
-    taskListResults: 'Hello Vue.js!'
+    taskListResults: '',
+    weeklyTotal:getWeeklyTotal()
   }
 });
 
@@ -189,6 +190,19 @@ function updateTasks(){
 	} );
 	
 }
+
+
+function getWeeklyTotal(){
+	$.get("http://"+baseUrl+"/weektotal")
+	.fail(function(error){console.log("Error getting tasks", error); })
+	.done(function(data){
+		console.log("meow" , data); 
+		vm.weeklyTotal = data[0].count;
+	
+	} );
+	
+}
+
 
 
 

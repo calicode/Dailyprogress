@@ -46,7 +46,7 @@ b.tasks.aggregate([{"$match":{'github.id':'16291386','dates':{'$gt':'14635295300
 	Task.aggregate([{
 		$match:
 		{'github.id':req.user.github.id,'startDate':{'$gt':startDate,'$lt':endDate} 
-		}} ,{$group:{_id:null,count:{$sum:$taskTime}}
+		}} ,{$group:{_id:null,count:{$sum:'$totalTime'}}
 
 	}])
 
